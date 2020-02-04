@@ -5,18 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="js/vue.min.js"></script>
+   
 </head>
 <body>
    <div id="app">
+       <input type="text" v-model="name">
     <p>{{name}}</p>
    </div> 
+    <script src="js/vue.min.js"></script>
    <script>
        var vm = new Vue({
            el:"#app",
            data:{
                name:"这是我的第一个vue程序"
+           },
+           created:function(){
+               console.log("初始化和加载");
+           },
+           mounted:function(){
+               console.log("meunted触发");
+           },
+           updated:function(){
+               console.log("updated内容");
            }
+           
        })
    </script>
 </body>

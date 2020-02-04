@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <fieldset>
+            <legend>
+                商品详情
+            </legend>
+            <p>
+                <label for="id">编号：</label>
+                <input type="text" v-model="prod.id"  class="form-control" name="id" id="id">
+            </p>
+            <p>
+                <label for="name">名称：</label>
+                <input type="text" v-model="prod.name" class="form-control" name="name" id="name">
+            </p>
+            <p>
+                <label for="price">价格：</label>
+                <input type="text" v-model="prod.price"  class="form-control" name="price" id="price">
+            </p>
+            <p><input type="button" @click="doSave" value="保存" class="btn btn-primary btn-block"></p>
+        </fieldset>
+        <input type="text" placeholder="请输入查询内容......" v-model="searchekey">
+        <input type="submit" value="查询">
+        <h3>商品信息表</h3>
+        <table class="table table-bordered">
+            <thead>
+                <th>编号</th>
+                <th>名称</th>
+                <th>价格</th>
+                <th>删除</th>
+            </thead>
+            <tbody>
+                <tr v-for="(p,i) in searchProdList">
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>&yen;{{p.price | priceFormat}}</td>
+                    <td><input type="button" @click="doDel(i)" value="删除" class="btn btn-outline-danger btn-block"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="js/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                searchekey:"",
+                prod:{id:0,name:'',price:0},
+                prodList:[
+                {id:1,name:'口罩',price:2},
+                {id:2,name:'防护服',price:500}
+                ]
+            },
+            computed:{
+                searchProdList:function(){
+                    var self = this;
+                    return this.prodList.filter(function(item){
+                       return item.name.indexOf(self.searchekey) !=-1;
+                    })
+                }
+            },
+            methods:{
+                doSave:function(){
+                    this.prodList.push(this.prod);
+                    console.log(this.prodList);
+                    this.prod={id:0,name:'',price:0};
+                },
+                doDel:function(index){
+                    var r=confirm("确定要删除吗？")
+                    if (r==true)
+                    {
+                        this.prodList.splice(index,1);
+                    }
+                       
+                }
+            },
+            filters:{
+                priceFormat:function(priceVal){
+                    return parseFloat(priceVal).toFixed(2)+"元";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
